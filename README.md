@@ -16,8 +16,8 @@ This project allows GPS trackers connected to The Things Network (TTN) to be eas
 - Traccar server
 
 ## Usage
-
-## TTN Webhook Configuration
+Using this connector is simple. First, you need to set up a Traccar server and a TTN application. Then, you can deploy the connector using Docker.
+### TTN Webhook Configuration
 __Automatic device ID forwarding__:
 The device IDs from TTN are forwarded to Traccar. It is important to re-use the same device IDs in Traccar to ensure proper tracking and data consistency.
 
@@ -33,6 +33,7 @@ This project depends on the TTN webhook configuration. You need to set up a webh
     - **Username**: Generate yourself, this username is also passed as environment variable `TTN_WEBHOOK_USERNAME`.
     - **Password**: Generate yourself, this password is also passed as environment variable `TTN_WEBHOOK_PASSWORD`.
 
+### Deployment
 Then use docker to quickly deploy this service:
 ```sh
 docker run -d \
