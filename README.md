@@ -17,7 +17,23 @@ This project allows GPS trackers connected to The Things Network (TTN) to be eas
 
 ## Usage
 
-Use docker to quickly deploy this service:
+## TTN Webhook Configuration
+__Automatic device ID forwarding__:
+The device IDs from TTN are forwarded to Traccar. It is important to re-use the same device IDs in Traccar to ensure proper tracking and data consistency.
+
+This project depends on the TTN webhook configuration. You need to set up a webhook in your TTN application to forward data to this connector. Here is a small explainer on how to configure the TTN webhook:
+
+**Important:** Ensure that the payload keys (by default 'latitude', 'longitude', and 'battery') are in the top-level decoded message dictionary. This can be checked in TTN's console at payload formatters. When testing a payload formatter, the keys should be in the top level. A payload decoder for the SenseCAP T1000 is included in the `payload-formatter` folder.
+
+1. Go to your TTN application console.
+2. Navigate to the "Integrations" section.
+3. Add a new webhook and configure it with the following details:
+    - **Webhook URL**: `http://your-server-url/webhook`
+    - **Authentication**: Select HTTP Basic Authentication.
+    - **Username**: Generate yourself, this username is also passed as environment variable `TTN_WEBHOOK_USERNAME`.
+    - **Password**: Generate yourself, this password is also passed as environment variable `TTN_WEBHOOK_PASSWORD`.
+
+Then use docker to quickly deploy this service:
 ```sh
 docker run -d \
   --name ttn-traccar-connector \
@@ -27,6 +43,8 @@ docker run -d \
     -e TTN_WEBHOOK_USERNAME=your-ttn-webhook-username \
     -e TTN_WEBHOOK_PASSWORD=your-ttn-webhook-password
 ```
+The TTN webhook will now forward the data to the connector, which will then forward it to the Traccar server.
+The TTN webhook authenticates itself with the connector using the username and password you provided.
 
 ## Configuration
 Create a `.env` file in the project root directory or simply pass the environment variables directly as shown in the 
@@ -52,7 +70,6 @@ PAYLOAD_KEY_LONGITUDE=longitude
 PAYLOAD_KEY_LATITUDE=latitude
 PAYLOAD_KEY_BATTERY=battery
 ```
-\
 
 
 ## Development
@@ -78,25 +95,7 @@ PAYLOAD_KEY_BATTERY=battery
     docker-compose build
     docker compose up -d
     ```
-
-## Device ID Forwarding
-
-The device IDs from TTN are forwarded to Traccar. It is important to re-use the same device IDs in Traccar to ensure proper tracking and data consistency.
-
-## TTN Webhook Configuration
-
-This project depends on the TTN webhook configuration. You need to set up a webhook in your TTN application to forward data to this connector. Here is a small explainer on how to configure the TTN webhook:
-
-**Important:** Ensure that the payload keys (by default 'latitude', 'longitude', and 'battery') are in the top-level decoded message dictionary. This can be checked in TTN's console at payload formatters. When testing a payload formatter, the keys should be in the top level. A payload decoder for the SenseCAP T1000 is included in the `payload-formatter` folder.
-
-1. Go to your TTN application console.
-2. Navigate to the "Integrations" section.
-3. Add a new webhook and configure it with the following details:
-    - **Webhook URL**: `http://your-server-url/webhook`
-    - **Authentication**: Select HTTP Basic Authentication.
-    - **Username**: The username you set in the `.env` file (`TTN_WEBHOOK_USERNAME`).
-    - **Password**: The password you set in the `.env` file (`TTN_WEBHOOK_PASSWORD`).
-
+   
 ## Contributing
 
 Contributions are welcome! Please open an issue or submit a pull request.
