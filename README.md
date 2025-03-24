@@ -38,8 +38,7 @@ Then use docker to quickly deploy this service:
 ```sh
 docker run -d \
   --name ttn-traccar-connector \
-  --env-file .env \
-  nielstiben/ttn-traccar-connector:latest
+  nielstiben/ttn-traccar-connector:latest \
     -e TRACCAR_OSMAND_URL=http://your-traccar-server-url \
     -e TTN_WEBHOOK_USERNAME=your-ttn-webhook-username \
     -e TTN_WEBHOOK_PASSWORD=your-ttn-webhook-password
