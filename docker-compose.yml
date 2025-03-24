@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  ttn_forwarder:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./.env:/app/.env
+    networks:
+      - my_shared_network
+networks:
+  my_shared_network:
+    external: true

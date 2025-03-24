@@ -55,16 +55,19 @@ This project allows GPS trackers connected to The Things Network (TTN) to be eas
 
 ## Usage
 
-1. Run the main script:
-
+1. Use docker to quickly deploy this service:
     ```sh
-    python main.py
+    docker run -d \
+      --name ttn-traccar-connector \
+      --env-file .env \
+      nielstiben/ttn-traccar-connector:latest
     ```
 
-2. Optionally, you can use Docker to run the application:
+2. Optionally, you can use Docker compose to run the application together with a .env file:
 
     ```sh
-    docker-compose up
+    docker-compose build
+    docker compose up -d
     ```
 
 ## Device ID Forwarding
