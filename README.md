@@ -15,7 +15,47 @@ This project allows GPS trackers connected to The Things Network (TTN) to be eas
 - TTN account and application
 - Traccar server
 
-## Installation
+## Usage
+
+Use docker to quickly deploy this service:
+```sh
+docker run -d \
+  --name ttn-traccar-connector \
+  --env-file .env \
+  nielstiben/ttn-traccar-connector:latest
+    -e TRACCAR_OSMAND_URL=http://your-traccar-server-url \
+    -e TTN_WEBHOOK_USERNAME=your-ttn-webhook-username \
+    -e TTN_WEBHOOK_PASSWORD=your-ttn-webhook-password
+```
+
+## Configuration
+Create a `.env` file in the project root directory or simply pass the environment variables directly as shown in the 
+example above.
+
+### Required Environment Variables
+- `TRACCAR_OSMAND_URL`: The URL of the Traccar server.
+- `TTN_WEBHOOK_USERNAME`: The username for the TTN webhook.
+- `TTN_WEBHOOK_PASSWORD`: The password for the TTN webhook.
+
+### Optional Environment Variables
+- `PAYLOAD_KEY_LONGITUDE`: The key for the longitude in the payload (default: "longitude").
+- `PAYLOAD_KEY_LATITUDE`: The key for the latitude in the payload (default: "latitude").
+- `PAYLOAD_KEY_BATTERY`: The key for the battery level in the payload (default: "battery").
+
+Example `.env` file:
+
+```env
+TRACCAR_OSMAND_URL=http://your-traccar-server-url
+TTN_WEBHOOK_USERNAME=your-ttn-webhook-username
+TTN_WEBHOOK_PASSWORD=your-ttn-webhook-password
+PAYLOAD_KEY_LONGITUDE=longitude
+PAYLOAD_KEY_LATITUDE=latitude
+PAYLOAD_KEY_BATTERY=battery
+```
+\
+
+
+## Development
 
 1. Clone the repository:
 
@@ -23,6 +63,7 @@ This project allows GPS trackers connected to The Things Network (TTN) to be eas
     git clone https://github.com/yourusername/ttn-traccar-connector.git
     cd ttn-traccar-connector
     ```
+   
 
 2. Install the required Python packages:
 
@@ -30,40 +71,8 @@ This project allows GPS trackers connected to The Things Network (TTN) to be eas
     pip install -r requirements.txt
     ```
 
-3. Create a `.env` file in the project root directory and add the following environment variables:
 
-    ### Required Environment Variables
-    - `TRACCAR_OSMAND_URL`: The URL of the Traccar server.
-    - `TTN_WEBHOOK_USERNAME`: The username for the TTN webhook.
-    - `TTN_WEBHOOK_PASSWORD`: The password for the TTN webhook.
-
-    ### Optional Environment Variables
-    - `PAYLOAD_KEY_LONGITUDE`: The key for the longitude in the payload (default: "longitude").
-    - `PAYLOAD_KEY_LATITUDE`: The key for the latitude in the payload (default: "latitude").
-    - `PAYLOAD_KEY_BATTERY`: The key for the battery level in the payload (default: "battery").
-
-    Example `.env` file:
-
-    ```env
-    TRACCAR_OSMAND_URL=http://your-traccar-server-url
-    TTN_WEBHOOK_USERNAME=your-ttn-webhook-username
-    TTN_WEBHOOK_PASSWORD=your-ttn-webhook-password
-    PAYLOAD_KEY_LONGITUDE=longitude
-    PAYLOAD_KEY_LATITUDE=latitude
-    PAYLOAD_KEY_BATTERY=battery
-    ```
-
-## Usage
-
-1. Use docker to quickly deploy this service:
-    ```sh
-    docker run -d \
-      --name ttn-traccar-connector \
-      --env-file .env \
-      nielstiben/ttn-traccar-connector:latest
-    ```
-
-2. Optionally, you can use Docker compose to run the application together with a .env file:
+3. You can use Docker compose to run the application together with a .env file:
 
     ```sh
     docker-compose build
